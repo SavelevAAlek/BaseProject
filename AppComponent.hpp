@@ -1,8 +1,11 @@
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
+#include "SwaggerComponent.hpp"
 
 class AppComponent {
 public:
+	SwaggerComponent swaggerComponent;
+
 	OATPP_CREATE_COMPONENT(std::string, helloString)([] {
 		return "Hello!";
 	}());
