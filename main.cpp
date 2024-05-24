@@ -3,40 +3,33 @@
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 #include "AppComponent.hpp"
+#include "dto/ResultDto.hpp"
+#include "dto/HelloDto.hpp"
+#include "controller/MathController.hpp"
 
 class HelloHandler : public oatpp::web::server::HttpRequestHandler {
 	std::shared_ptr<OutgoingResponse> handle(const std::shared_ptr<IncomingRequest>& request) override {
 		OATPP_COMPONENT(std::string, helloString);
-		return ResponseFactory::createResponse(Status::CODE_200, helloString);
+
+		OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
+
+		auto list = HelloDto::createShared();
+
+		auto element1 = ElementDto::createShared();
+		list->elements = {};
+		element1->id = 1;
+		element1->name = "Alexey";
+
+		auto element2 = ElementDto::createShared();
+		element2->id = 2;
+		element2->name = "Sergey";
+		list->elements->push_back(element1);
+		list->elements->push_back(element2);
+		return ResponseFactory::createResponse(Status::CODE_200, list, objectMapper);
 	}
 };
 
-class SumHandler : public oatpp::web::server::HttpRequestHandler {
-public:
-	std::shared_ptr<OutgoingResponse> handle(const std::shared_ptr<IncomingRequest>& request) override {
 
-		auto aPtr = request->getQueryParameter("a").get();
-		auto bPtr = request->getQueryParameter("b").get();
-
-		auto acceptLanguageHandler = request->getHeader("Accept-Language").get();
-		OATPP_LOGW("App", acceptLanguageHandler->c_str());
-
-		if (aPtr == nullptr || bPtr == nullptr) {
-			OATPP_LOGE("App", "Не все параметры указаны");
-			return ResponseFactory::createResponse(Status::CODE_400, "Не все параметры указаны");
-		}
-
-		float a = atof(aPtr->c_str());
-		float b = atof(bPtr->c_str());
-
-		auto response = ResponseFactory::createResponse(Status::CODE_200, std::to_string(a + b));
-		response->putHeaderIfNotExists("SumResult", std::to_string(a + b));
-
-		OATPP_LOGD("App", "Результат вычислен успешно");
-
-		return response;
-	}
-};
 
 // функция, для запуска сервера
 void runServer() {
@@ -44,8 +37,10 @@ void runServer() {
 
 	OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter);
 
-	httpRouter->route("GET", "/sum", std::make_shared<SumHandler>());
-	httpRouter->route("GET", "/hello", std::make_shared<HelloHandler>());
+	httpRouter->addController(std::make_shared<MathController>());
+
+	//httpRouter->route("GET", "/sum", std::make_shared<SumHandler>());
+	//httpRouter->route("GET", "/hello", std::make_shared<HelloHandler>());
 
 	OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler);
 

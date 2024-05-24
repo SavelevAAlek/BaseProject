@@ -1,4 +1,5 @@
 #include "oatpp/core/macro/component.hpp"
+#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 
 class AppComponent {
 public:
@@ -16,6 +17,10 @@ public:
 	}());
 
 	OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
-		return oatpp::network::tcp::server::ConnectionProvider::createShared({ "localhost", 8000, oatpp::network::Address::IP_4 });
+		return oatpp::network::tcp::server::ConnectionProvider::createShared({ "localhost", 8888, oatpp::network::Address::IP_4 });
+	}());
+
+	OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper)([] {
+		return oatpp::parser::json::mapping::ObjectMapper::createShared();
 	}());
 };
