@@ -3,21 +3,31 @@
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/core/Types.hpp"
 #include "../dto/TodoDto.hpp"
+#include "../dto/UserDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 class TodoController : public oatpp::web::server::api::ApiController {
 private:
 	OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
+
+	OATPP_COMPONENT(std::shared_ptr<MyClient>, dbClient);
+
 	List<Object<TodoDto>> todos = List<Object<TodoDto>>::createShared();
 
 	// функция для проверки данных авторизации
-	void checkAuth(std::shared_ptr<oatpp::web::server::handler::DefaultBasicAuthorizationObject> authObject) {
-		if (authObject->userId == "admin" && authObject->password == "admin") {
-			return;
-		}
-		else {
-			throw oatpp::web::protocol::http::HttpError(oatpp::web::protocol::http::Status::CODE_401, "Unauthorized", {});
+	int checkAuth(std::shared_ptr<oatpp::web::server::handler::DefaultBasicAuthorizationObject> authObject) {
+		auto result = dbClient->getAllUsers();
+
+		auto users = result->fetch<oatpp::Vector<oatpp::Object<UserDto>>>();
+
+		OATPP_LOGI("App", objectMapper->writeToString(users)->c_str());
+
+		for (auto i = 0; i < users->size(); i++) {
+			if (users[i]->username == authObject->userId &&
+				users[i]->password == authObject->password) {
+				return users[i]->id;
+			}
 		}
 	}
 public:

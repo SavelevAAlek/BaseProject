@@ -148,6 +148,8 @@
   <ItemGroup>
     <ClInclude Include="AppComponent.hpp" />
     <ClInclude Include="controller\MathController.hpp" />
+    <ClInclude Include="db\MyClient.hpp" />
+    <ClInclude Include="dto\UserDto.hpp" />
     <ClInclude Include="SwaggerComponent.hpp" />
     <ClInclude Include="controller\TodoController.hpp" />
     <ClInclude Include="dto\HelloDto.hpp" />
