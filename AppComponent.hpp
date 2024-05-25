@@ -31,7 +31,7 @@ public:
 	}());
 
 	OATPP_CREATE_COMPONENT(std::shared_ptr<MyClient>, myDatabaseClient)([] {
-		auto connectionProvider = std::make_shared<oatpp::sqlite::ConnectionProvider>("todo_db.db");
+		auto connectionProvider = std::make_shared<oatpp::sqlite::ConnectionProvider>("airplanes_db.db");
 
 		auto executor = std::make_shared<oatpp::sqlite::Executor>(connectionProvider);
 

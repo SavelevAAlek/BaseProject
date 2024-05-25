@@ -7,6 +7,7 @@ class UserDto : public oatpp::DTO {
 	DTO_FIELD(Int16, id);
 	DTO_FIELD(String, username);
 	DTO_FIELD(String, password);
+	DTO_FIELD(Int16, role);
 };
 
 #include OATPP_CODEGEN_END(DTO)
