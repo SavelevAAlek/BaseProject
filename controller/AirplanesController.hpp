@@ -38,6 +38,7 @@ public:
 	}
 
     ENDPOINT_INFO(airplanesAll) {
+        info->summary = "Get all airplanes";
         info->tags = std::list<oatpp::String>{ "Airplanes" };
         info->addSecurityRequirement("Authorization required");
     }
@@ -54,6 +55,7 @@ public:
     }
 
     ENDPOINT_INFO(airplanesOne) {
+        info->summary = "Get one airplane by id";
         info->tags = std::list<oatpp::String>{ "Airplanes" };
         info->addSecurityRequirement("Authorization required");
     }
@@ -75,6 +77,7 @@ public:
 
 
     ENDPOINT_INFO(airplanesAdd) {
+        info->summary = "Add an airplane to database";
         info->tags = std::list<oatpp::String>{ "Airplanes" };
         info->addSecurityRequirement("Authorization required");
     }
@@ -91,6 +94,7 @@ public:
     }
 
     ENDPOINT_INFO(airplanesUpdate) {
+        info->summary = "Update airplane fields by id";
         info->tags = std::list<oatpp::String>{ "Airplanes" };
         info->pathParams["id"].description = "Description of ID";
         info->addSecurityRequirement("Authorization required");
@@ -114,6 +118,7 @@ public:
     }
 
     ENDPOINT_INFO(airplanesDelete) {
+        info->summary = "Delete airplane by id";
         info->tags = std::list<oatpp::String>{ "Airplanes" };
         info->addSecurityRequirement("Authorization required");
     }

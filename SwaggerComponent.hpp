@@ -6,10 +6,10 @@ class SwaggerComponent {
 	OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::DocumentInfo>, swaggerDocumentInfo)([] {
 		oatpp::swagger::DocumentInfo::Builder builder;
 
-		builder.setTitle("Todo Application");
-		builder.setDescription("First C++ backend app");
+		builder.setTitle("Aircraft directory");
+		builder.setDescription("Digital department project app");
 		builder.setVersion("0.0.1");
-		builder.setContactName("Alexey Savelyev");
+		builder.setContactName("Alexey Savelyev, Roman Kiprov, Vadim Dyachenko");
 		builder.setContactEmail("savelyev.main@gmail.com");
 		return builder.build();
 		}());
